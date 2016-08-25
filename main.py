@@ -123,7 +123,7 @@ class MainHandler(webapp2.RequestHandler):
         usr = self.request.get("username")
         usr = cgi.escape(usr)
         pwd = self.request.get("password")
-        pwd = cgi.escape(
+        pwd = cgi.escape(pwd)
         ver = self.request.get("verify")
         ver = cgi.escape(ver)
         eml = self.request.get("email")
@@ -135,9 +135,11 @@ class MainHandler(webapp2.RequestHandler):
     
         pwd_error = "That's a crappy password; I can't let you use that." if (valid_password(pwd) == None) else ""
         
+        pwd_error = "C'mon...you at least need <b>something</b> as a password.  (Preferably something decent.)" if (pwd == "") else pwd_error
+        
         pwdver_error = "Check your typing.  &quot*****&quot isn't the same as &quot*****&quot." if (pwd != ver) else ""
         
-        email_error = "No.   Just...   no." if (valid_email(eml) == None) else ""
+        email_error = "No.   Just...   no." if (eml and valid_email(eml) == None) else ""
 
         
         #Generate variables to create form output.
